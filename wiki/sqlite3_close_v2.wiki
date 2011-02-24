@@ -13,6 +13,9 @@ SQLITE_API int sqlite3_close_v2(sqlite3 *db){
   if( !db ){
     return SQLITE_OK;
   }
+  if( !sqlite3SafetyCheckSickOrOk(db) ){
+    return SQLITE_MISUSE_BKPT;
+  }
   /* If there are any outstanding VMs, finalize then. */
   while( db->pVdbe ){
 	sqlite3_finalize((sqlite3_stmt*)db->pVdbe);
